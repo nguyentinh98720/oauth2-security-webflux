@@ -1,0 +1,36 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          nation-client-oidc:
+            provider: spring
+            client-id: nation-client
+            client-secret: 123456
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: nation-client-oidc
+          nation-client-authorization-code:
+            provider: spring
+            client-id: nation-client
+            client-secret: 123456
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope:
+             - read
+             - manage
+            client-name: nation-client-authorization-code
+        provider:
+          spring:
+            issuer-uri: "https://stormy-gorge-61408.herokuapp.com"
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+    url: { DATABASE_URL }
+    driver-class-name: org.postgresql.Driver
+    username: { USERNAME }
+    password: { PASSWORD }
