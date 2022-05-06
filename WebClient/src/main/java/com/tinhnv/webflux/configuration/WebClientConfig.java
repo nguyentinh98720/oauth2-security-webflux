@@ -1,6 +1,7 @@
 package com.tinhnv.webflux.configuration;
 
 import org.springframework.context.annotation.*;
+import org.springframework.security.config.annotation.method.configuration.*;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.*;
 import org.springframework.security.oauth2.client.web.*;
@@ -8,6 +9,7 @@ import org.springframework.security.oauth2.client.web.reactive.function.client.*
 import org.springframework.web.reactive.function.client.*;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebClientConfig {
 
     @Bean

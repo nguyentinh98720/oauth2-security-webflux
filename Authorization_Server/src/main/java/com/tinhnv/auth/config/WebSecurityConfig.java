@@ -1,37 +1,36 @@
-package com.nation.auth.configuration;
+package com.tinhnv.auth.config;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
-import org.springframework.security.config.*;
+import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.security.crypto.password.*;
-import org.springframework.security.provisioning.*;
 import org.springframework.security.web.*;
 
 import javax.sql.*;
 
-@Configuration
+import static org.springframework.security.config.Customizer.*;
+
 @EnableWebSecurity
 public class WebSecurityConfig {
 
     @Autowired
     private DataSource dataSource;
 
-    @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().authenticated()
-                )
-                .formLogin(Customizer.withDefaults());
-        return http.build();
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.jdbcAuthentication().dataSource(dataSource).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
-    UserDetailsService users() {
-        return new JdbcUserDetailsManager(dataSource);
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests(authorizeRequests ->
+          authorizeRequests.anyRequest().authenticated()
+        )
+          .formLogin(withDefaults());
+        return http.build();
     }
 
     @Bean

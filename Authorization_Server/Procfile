@@ -1,1 +1,0 @@
-web: java -jar target/authorization-1.0.jar

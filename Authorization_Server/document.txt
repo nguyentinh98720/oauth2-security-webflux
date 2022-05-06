@@ -1,5 +1,0 @@
-1. Client authentication method
-POST
-2. Grant type
-Authentication code
--> redirect uri required
